@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Markdown Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      overflow-x: auto;
+    }
+    code {
+      background: #eee;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📄 Markdown 渲染结果</h1>
+  <div id="content">加载中...</div>
+
+  <script>
+    // 获取 URL 中的参数 ?file=xxx
+    const urlParams = new URLSearchParams(window.location.search);
+    const filePath = urlParams.get('file');
+
+    if (filePath) {
+      fetch(filePath)
+        .then(response => response.text())
+        .then(text => {
+          document.getElementById('content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+          document.getElementById('content').innerText = '加载失败: ' + error;
+        });
+    } else {
+      document.getElementById('content').innerText = '未提供 Markdown 文件路径';
+    }
+  </script>
+
+</body>
+</html>
